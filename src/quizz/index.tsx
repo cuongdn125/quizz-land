@@ -49,12 +49,10 @@ export default function Quizz() {
   const categoryPassed = useSelector(
     (state: RootState) => state.user.categoryPassed
   );
-  // console.log(questions);
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "category",
     onChange: (e) => {
-      // setCategory(e);
       dispatch(setCategory(e));
     },
   });
@@ -99,11 +97,16 @@ export default function Quizz() {
           <Flex {...group}>
             {listCategory.map((value) => {
               const radio = getRadioProps({ value: value.name });
+              const disabled = categoryPassed.some((e) => e === value.name);
+
+              if (disabled) {
+                radio.isChecked = false;
+              }
               return (
                 <CategoryRadio
                   key={value.value}
                   radioProps={{ ...radio }}
-                  disabled={categoryPassed.some((e) => e === value.name)}
+                  disabled={disabled}
                 >
                   {value.name}
                 </CategoryRadio>
